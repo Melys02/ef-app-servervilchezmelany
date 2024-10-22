@@ -10,6 +10,17 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UsuarioService {
+public class UsuarioService implements IUsuarioService {
+    private final UsuarioRepository usuarioRepository;
+    private PasswordEncoder passwordEncoder;
 
+    @Override
+    public Optional<Usuario> obtenerUsuarioXnombre(String nomusuario) {
+        return usuarioRepository.findByUsername(nomusuario);
+    }
+
+    public Usuario register(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return usuarioRepository.save(usuario);
+    }
 }

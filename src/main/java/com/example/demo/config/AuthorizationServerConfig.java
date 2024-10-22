@@ -82,10 +82,6 @@ public class AuthorizationServerConfig {
         return new InMemoryRegisteredClientRepository(registeredClient);
     }
 
-
-
-
-
     //este motodo se va a encargar de configurar el JwtEncoder
     @Bean
     public JwtEncoder jwtEncoder(){

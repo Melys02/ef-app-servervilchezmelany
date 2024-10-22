@@ -16,7 +16,35 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class CustomUserDetailsService   {
+public class CustomUserDetailsService  implements UserDetailsService {
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
+    @Override
+    public UserDetails loadUserByUsername(String nomusuario) throws UsernameNotFoundException {
+        Optional<Usuario> usuario = usuarioRepository.findByUsername(nomusuario);
+        if (usuario.isEmpty()) {
+            throw new UsernameNotFoundException("Usuario no encontrado con el nombre: " + nomusuario);
+        }
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(String.valueOf(usuario.get().getIdusuario()))
+                .password(usuario.get().getPassword())
+                .roles(usuario.get().getRol())
+                .disabled(!usuario.get().getActivo())
+                .build();
+    }
+    private UserDetails crearUserDetail(
+            Usuario usuario, List<GrantedAuthority> authorityList
+    ){
+        return new User(
+                usuario.getNomusuario(),
+                usuario.getPassword(),
+                usuario.getActivo(),
+                true,
+                true,
+                true,
+                authorityList);
+    }
 }

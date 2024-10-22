@@ -11,5 +11,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
-
+    private Integer idusuario;
+    private String nomusuario;
+    private String email;
+    private String nombres;
+    private String apellidos;
+    private String rol;
+    private String password;
+    private Boolean activo;
 }
